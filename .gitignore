@@ -1,22 +1,82 @@
-# Build artifacts
+#################################
+# 🔧 Build artifacts (.NET Core)
+#################################
 bin/
 obj/
 *.dll
 *.exe
 *.pdb
+*.cache
+*.mdb
 
-# User-specific files
-.vs/
-*.user
-*.suo
-
-# Rider / VS Code
-.idea/
-.vscode/
-
-# Backup files
-*.bak
-*.tmp
-
-# Publish folders (nếu không muốn track)
+#################################
+# ⚙️ Publish output (nếu bạn publish vào thư mục riêng)
+#################################
 publish/
+dist/
+out/
+artifacts/
+
+#################################
+# 🧠 User-specific files (Visual Studio)
+#################################
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+#################################
+# 💡 Visual Studio Code
+#################################
+.vscode/
+*.code-workspace
+
+#################################
+# 🧠 Rider / JetBrains
+#################################
+.idea/
+*.sln.iml
+
+#################################
+# 🧪 Test result & coverage
+#################################
+TestResults/
+*.coverage
+*.coveragexml
+*.log
+*.trx
+
+#################################
+# 🧠 Copilot (Visual Studio AI)
+#################################
+.vs/**/CopilotIndices/
+*.db
+*.db-shm
+*.db-wal
+
+#################################
+# 🧹 System / Backup files
+#################################
+*.tmp
+*.bak
+*.swp
+*.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+#################################
+# 📦 NuGet & package output
+#################################
+*.nupkg
+packages/
+.nuget/
+project.lock.json
+project.fragment.lock.json
+
+#################################
+# 🔐 Secrets (nếu có config riêng)
+#################################
+secrets.json
+appsettings.*.local.json
