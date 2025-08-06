@@ -1,0 +1,63 @@
+name: Build & Deploy ASP.NET Core to Linux
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Restore dependencies
+        run: dotnet restore WebApplication1/TestIIS.csproj
+
+      - name: Build app
+        run: dotnet build WebApplication1/TestIIS.csproj --configuration Release --no-restore
+
+      - name: Publish app
+        run: dotnet publish WebApplication1/TestIIS.csproj -c Release -o publish -v:normal
+
+      - name: Copy files using scp
+        shell: powershell
+        working-directory: D:\GitHubRunners\TestIIS_Runner\actions-runner\_work\testDevOps\testDevOps
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_USER: thanhtv
+          SSH_HOST: 192.168.100.176
+        run: |
+          # Ghi SSH key
+          $key = $env:SSH_KEY -replace "`r`n", "`n"
+          [System.IO.File]::WriteAllText("key.pem", $key)
+
+          # Set quyền
+          $acl = Get-Acl "key.pem"
+          $user = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
+          $accessRule = New-Object System.Security.AccessControl.FileSystemAccessRule($user, "Read", "Allow")
+          $acl.SetAccessRuleProtection($true, $false)
+          $acl.AddAccessRule($accessRule)
+          Set-Acl "key.pem" $acl
+
+          # SSH tạo thư mục đích
+          ssh -i key.pem -o StrictHostKeyChecking=no $env:SSH_USER@$env:SSH_HOST "mkdir -p /home/thanhtv/app/publish"
+
+          $remotePath = "$env:SSH_USER@192.168.100.176:/home/thanhtv/app/publish"
+          Write-Output " SSH_USER = $env:SSH_USER"
+          Write-Output " SSH_HOST = $env:SSH_HOST"
+          Write-Output " remotePath = $remotePath"
+
+           scp -v -i key.pem -o StrictHostKeyChecking=no -r ./publish/* $remotePath
+
+      - name: SSH Restart Service
+        shell: powershell
+        env:
+          SSH_KEY: ${{ secrets.SSH_KEY }}
+          SSH_USER: thanhtv
+          SSH_HOST: 192.168.100.176
+        run: |
+          # SSH restart
+          # đã tạo file key.pem trên step scp nên ko cần tạo lại nữa,, chỉ ssh thôi
+          ssh -i key.pem -o StrictHostKeyChecking=no $env:SSH_USER@192.168.100.176 "sudo systemctl restart myapp"
