@@ -1,0 +1,10 @@
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\TestIIS.exe
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\web.config
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\TestIIS.dll
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\TestIIS.deps.json
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\TestIIS.runtimeconfig.json
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\TestIIS.pdb
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\Microsoft.OpenApi.dll
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.Swagger.dll
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerGen.dll
+D:\PROJ\TestIIS\WebApplication1\obj\Debug\net8.0\PubTmp\Out\Swashbuckle.AspNetCore.SwaggerUI.dll
