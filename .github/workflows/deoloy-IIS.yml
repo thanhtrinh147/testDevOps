@@ -1,0 +1,44 @@
+name: Build and Deploy to IIS
+
+on:
+  push:
+    branches:
+      - main # Nhánh cần deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted # Chạy trên runner đặt ngay trên máy IIS
+
+    steps:
+      # 1. Lấy code
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      # 2. Build (dùng .NET có sẵn trên máy)
+      - name: Build project
+        run: dotnet build --configuration Release
+
+      # 3. stop IISdssd
+      - name: Stop IIS App Pool
+        run: |
+          Import-Module WebAdministration
+          if ((Get-WebAppPoolState "TestIIS").Value -eq "Started") {
+              Stop-WebAppPool -Name "TestIIS"
+          }
+        shell: powershell
+
+      # 3. Publish ra thư mục  tạm
+      - name: Publish directly to IIS folder
+        run: dotnet publish --configuration Release --output "D:\PROJ\TestIIS\WebApplication1\publish"
+
+      # 4. Restart chỉ 1 site
+      - name: Restart IIS site
+        shell: powershell
+        run: |
+          Import-Module WebAdministration
+          if ((Get-WebAppPoolState "TestIIS").Value -ne "Started") {
+              Start-WebAppPool -Name "TestIIS"
+          }
+          # Hoặc restart site:
+          Stop-WebSite -Name "TestIIS"
+          Start-WebSite -Name "TestIIS"
