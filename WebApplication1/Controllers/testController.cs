@@ -9,7 +9,7 @@ namespace WebApplication1.Controllers
         [HttpGet("SayHello")]
         public string Get(string name)
         {
-            return "Xin chào bạn: " + name;
+            return "DM: Xin chào bạn: " + name;
         }
         [HttpPost("AddName")]
         public string AddName(string name)
