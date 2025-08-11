@@ -16,4 +16,5 @@ jobs:
         run: |
           git remote add gitlab "${{ secrets.GL_REPO }}"
           # Mirror push (push tất cả refs, bao gồm branch, tag)
-          git push --mirror gitlab
+          git push gitlab --all
+          git push gitlab --tags
