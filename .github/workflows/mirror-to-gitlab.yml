@@ -14,7 +14,15 @@ jobs:
 
       - name: Push to GitLab
         run: |
-          git remote add gitlab "${{ secrets.GL_REPO }}"
-          # Mirror push (push tất cả refs, bao gồm branch, tag)
-          git push gitlab --all
-          git push gitlab --tags
+          # Thêm remote gitlab
+           git remote add gitlab "${{ secrets.GL_REPO }}"
+           
+           # Lấy tên nhánh hiện tại từ github.ref, ví dụ refs/heads/main => main
+           BRANCH=${GITHUB_REF#refs/heads/}
+
+           # Đồng bộ local với remote gitlab branch (pull rồi rebase)
+           git fetch gitlab $BRANCH || true
+           git rebase gitlab/$BRANCH || true
+           
+           # Push branch hiện tại lên gitlab
+           git push gitlab $BRANCH
