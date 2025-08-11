@@ -10,7 +10,7 @@ jobs:
       - name: Checkout GitHub repo
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # clone full historyaa
+          fetch-depth: 0 # clone full history
 
       - name: Push to GitLab
         run: |
