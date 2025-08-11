@@ -14,15 +14,18 @@ jobs:
 
       - name: Push to GitLab
         run: |
-          # Thêm remote gitlab
-           git remote add gitlab "${{ secrets.GL_REPO }}"
-           
-           # Lấy tên nhánh hiện tại từ github.ref, ví dụ refs/heads/main => main
+          git remote add gitlab "${{ secrets.GL_REPO }}"
            BRANCH=${GITHUB_REF#refs/heads/}
 
-           # Đồng bộ local với remote gitlab branch (pull rồi rebase)
+           # Cấu hình user cho git
+           git config user.email "actions@github.com"
+           git config user.name "GitHub Actions Bot"
+
+           # Lấy nhánh gitlab về, nếu không có thì bỏ qua lỗi
            git fetch gitlab $BRANCH || true
+
+           # Rebase nếu có commit mới trên remote
            git rebase gitlab/$BRANCH || true
-           
-           # Push branch hiện tại lên gitlab
-           git push gitlab $BRANCH
+
+           # Push branch lên gitlab, có thể cần --force-with-lease nếu non-fast-forward
+           git push gitlab $BRANCH --force-with-lease
